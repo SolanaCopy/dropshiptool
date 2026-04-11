@@ -62,10 +62,19 @@ router.post("/webhook", express.raw({ type: "application/json" }), (req, res) =>
 
   const eventName = payload.meta?.event_name;
   const customData = payload.meta?.custom_data || {};
-  const userId = customData.user_id;
   const data = payload.data?.attributes || {};
 
-  console.log(`\nLS Webhook: ${eventName} — user ${userId}`);
+  // Zoek user op via user_id (custom_data) of als fallback via email
+  let userId = customData.user_id;
+  if (!userId && data.user_email) {
+    const userByEmail = db.prepare("SELECT id FROM users WHERE email = ?").get(data.user_email);
+    if (userByEmail) {
+      userId = userByEmail.id;
+      console.log(`\nLS Webhook: ${eventName} — found user ${userId} via email ${data.user_email}`);
+    }
+  }
+
+  console.log(`\nLS Webhook: ${eventName} — user ${userId} (email: ${data.user_email || "n/a"})`);
 
   switch (eventName) {
     case "subscription_created":

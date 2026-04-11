@@ -70,10 +70,10 @@ function Pricing({ onCheckout }) {
           </ul>
           <button
             className="pricing-btn pricing-btn-primary"
-            onClick={() => !isPro && onCheckout && onCheckout({ plan: "pro" })}
+            onClick={() => !isPro && onCheckout && onCheckout()}
             disabled={isPro}
           >
-            {isPro ? "Huidig plan" : "Upgrade naar Pro"}
+            {isPro ? "Huidig plan" : user ? "Upgrade naar Pro" : "Log in om te upgraden"}
           </button>
           <p className="pricing-guarantee">Veilig betalen &middot; Opzeggen wanneer je wilt</p>
         </div>

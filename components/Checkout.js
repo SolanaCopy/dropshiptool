@@ -36,6 +36,11 @@ function Checkout({ onClose, onSuccess }) {
   }, [onSuccess, refreshUser]);
 
   const handlePay = () => {
+    if (!user || !user.id) {
+      alert("Je moet ingelogd zijn om te upgraden. Sluit dit venster en log in.");
+      return;
+    }
+
     const variantId = process.env.NEXT_PUBLIC_LS_PRO_VARIANT;
     const storeSlug = process.env.NEXT_PUBLIC_LS_STORE_SLUG || "trendvinder";
 
@@ -115,8 +120,15 @@ function Checkout({ onClose, onSuccess }) {
         {step === "done" && (
           <div className="checkout-done">
             <div className="checkout-done-icon">&#127881;</div>
-            <h2>Welkom bij Pro!</h2>
-            <p>Je account is geupgraded. Alle Pro features zijn nu beschikbaar.</p>
+            <h2>Welkom bij Pro, {user?.name || ""}!</h2>
+            <p>Je account is geactiveerd. Alle Pro features zijn nu voor jou beschikbaar.</p>
+            <div className="checkout-unlock-list">
+              <div className="checkout-unlock-item">&#9989; Onbeperkt producten zoeken</div>
+              <div className="checkout-unlock-item">&#9989; Onbeperkt leveranciers zoeken</div>
+              <div className="checkout-unlock-item">&#9989; Trend Analyzer &amp; Social Trends</div>
+              <div className="checkout-unlock-item">&#9989; Email alerts &amp; CSV export</div>
+              <div className="checkout-unlock-item">&#9989; Pro cursus (21 lessen)</div>
+            </div>
             <button className="checkout-pay-btn" onClick={onClose}>Start met zoeken &rarr;</button>
           </div>
         )}

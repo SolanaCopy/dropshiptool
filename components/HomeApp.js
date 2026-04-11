@@ -26,13 +26,25 @@ import Footer from "./Footer";
 import { searchProducts, getFavorites, addFavorite, removeFavorite, saveSearch, exportFavoritesCSV } from "../services/api";
 import { isBrandProduct } from "../services/brands";
 import { trackAction } from "../services/trackProgress";
+import { useAuth } from "../context/AuthContext";
 import Checkout from "./Checkout";
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005") + "/api";
 
 export default function HomeApp() {
+  const { user } = useAuth();
   const [tab, setTab] = useState("products");
-  const [showCheckout, setShowCheckout] = useState(null); // null of { plan, annual }
+  const [showCheckout, setShowCheckout] = useState(null);
+
+  // Wrapper: check eerst of user ingelogd is voor checkout
+  const handleUpgrade = () => {
+    if (!user) {
+      sessionStorage.setItem("afterLoginAction", "upgrade");
+      setShowAuth(true);
+      return;
+    }
+    setShowCheckout({ plan: "pro" });
+  };
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("score");
   const [products, setProducts] = useState([]);
@@ -53,6 +65,23 @@ export default function HomeApp() {
   const [category, setCategory] = useState("Alle");
   const [showAuth, setShowAuth] = useState(false);
   const [favorites, setFavorites] = useState([]);
+  const [showProWelcome, setShowProWelcome] = useState(false);
+
+  // Toon welcome banner na Pro upgrade
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("justUpgradedToPro") === "1") {
+      sessionStorage.removeItem("justUpgradedToPro");
+      setShowProWelcome(true);
+    }
+  }, []);
+
+  // Open checkout automatisch na login als user eerst wilde upgraden
+  useEffect(() => {
+    if (user && typeof window !== "undefined" && sessionStorage.getItem("afterLoginAction") === "upgrade") {
+      sessionStorage.removeItem("afterLoginAction");
+      setShowCheckout({ plan: "pro" });
+    }
+  }, [user]);
 
   const loadFavorites = () => {
     const token = localStorage.getItem("token");
@@ -310,7 +339,7 @@ export default function HomeApp() {
         )}
 
         {tab === "analyzer" && (
-          <ProLock feature="Trend Analyzer" onUpgrade={() => setShowCheckout({ plan: "pro" })}>
+          <ProLock feature="Trend Analyzer" onUpgrade={handleUpgrade}>
             <TrendAnalyzer />
           </ProLock>
         )}
@@ -318,28 +347,28 @@ export default function HomeApp() {
         {tab === "niches" && (
           <div className="niches-page">
             <NicheScore />
-            <ProLock feature="Markt Heatmap & Seizoenskalender" onUpgrade={() => setShowCheckout({ plan: "pro" })}>
+            <ProLock feature="Markt Heatmap & Seizoenskalender" onUpgrade={handleUpgrade}>
               <MarketHeatmap />
               <SeasonCalendar />
             </ProLock>
           </div>
         )}
         {tab === "social" && (
-          <ProLock feature="Social Trends" onUpgrade={() => setShowCheckout({ plan: "pro" })}>
+          <ProLock feature="Social Trends" onUpgrade={handleUpgrade}>
             <SocialTrends />
           </ProLock>
         )}
         {tab === "history" && (
-          <ProLock feature="Zoekgeschiedenis" onUpgrade={() => setShowCheckout({ plan: "pro" })}>
+          <ProLock feature="Zoekgeschiedenis" onUpgrade={handleUpgrade}>
             <SearchHistory onSearch={(q) => { setQuery(q); setTab("products"); }} />
           </ProLock>
         )}
         {tab === "alerts" && (
-          <ProLock feature="Email Alerts" onUpgrade={() => setShowCheckout({ plan: "pro" })}>
+          <ProLock feature="Email Alerts" onUpgrade={handleUpgrade}>
             <AlertSettings />
           </ProLock>
         )}
-        {tab === "calculator" && <ProfitCalculator onUpgrade={() => setShowCheckout({ plan: "pro" })} />}
+        {tab === "calculator" && <ProfitCalculator onUpgrade={handleUpgrade} />}
         {tab === "learn" && <LearnPath onNavigate={setTab} />}
         {tab === "favorites" && (
           <div className="favorites-page">
@@ -349,7 +378,7 @@ export default function HomeApp() {
                 <button className="csv-export-btn" onClick={async () => {
                   const result = await exportFavoritesCSV();
                   if (!result.success) {
-                    if (result.upgrade) setShowCheckout({ plan: "pro" });
+                    if (result.upgrade) handleUpgrade();
                     else setError(result.error);
                   }
                 }}>
@@ -374,7 +403,7 @@ export default function HomeApp() {
             )}
           </div>
         )}
-        {tab === "pricing" && <Pricing onCheckout={setShowCheckout} />}
+        {tab === "pricing" && <Pricing onCheckout={handleUpgrade} />}
 
         {/* Engagement sectie — alleen op products tab */}
         {tab === "products" && (
@@ -394,12 +423,29 @@ export default function HomeApp() {
       {tab === "products" && <SEOContent />}
       {tab === "products" && <Footer />}
 
+      {showProWelcome && (
+        <div className="pro-welcome-banner">
+          <div className="pro-welcome-inner">
+            <div className="pro-welcome-icon">&#127881;</div>
+            <div className="pro-welcome-text">
+              <strong>Welkom bij Trendvinder Pro!</strong>
+              <span>Alle features zijn nu ontgrendeld &mdash; veel succes met je zoektocht!</span>
+            </div>
+            <button className="pro-welcome-close" onClick={() => setShowProWelcome(false)}>&times;</button>
+          </div>
+        </div>
+      )}
+
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
       {showCheckout && (
         <Checkout
           onClose={() => setShowCheckout(null)}
-          onSuccess={() => { setShowCheckout(null); window.location.reload(); }}
+          onSuccess={() => {
+            setShowCheckout(null);
+            sessionStorage.setItem("justUpgradedToPro", "1");
+            window.location.reload();
+          }}
         />
       )}
 

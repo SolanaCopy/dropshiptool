@@ -86,6 +86,7 @@ function HeroPreviewCards({ products }) {
 
 function Header({ onShowAuth, activeTab, onTabChange, favoriteCount, previewProducts, showHero = true }) {
   const { user, logout } = useAuth();
+  const isPro = user && user.plan === "pro";
 
   return (
     <header className="header">
@@ -113,7 +114,15 @@ function Header({ onShowAuth, activeTab, onTabChange, favoriteCount, previewProd
             {user ? (
               <>
                 <span className="nav-user">Hoi, {user.name}</span>
-                <span className="nav-plan">{user.plan}</span>
+                {isPro ? (
+                  <span className="nav-plan-badge nav-plan-pro" title="Je hebt Trendvinder Pro">
+                    &#9733; PRO
+                  </span>
+                ) : (
+                  <span className="nav-plan-badge nav-plan-free" title="Gratis plan">
+                    FREE
+                  </span>
+                )}
                 <button className="btn-cta btn-logout" onClick={logout}>Uitloggen</button>
               </>
             ) : (

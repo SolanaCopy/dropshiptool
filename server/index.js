@@ -14,6 +14,9 @@ const paymentRoutes = require("./routes/payment");
 const app = express();
 const PORT = process.env.PORT || 3005;
 
+// Trust proxy (voor Railway/Vercel/etc zodat rate limiter de echte IP ziet)
+app.set("trust proxy", 1);
+
 // CORS — in productie alleen eigen domein toestaan
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((s) => s.trim())
