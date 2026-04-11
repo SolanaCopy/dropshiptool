@@ -86,22 +86,21 @@ async function searchAmazon(query, page = 1, country = "NL") {
 
 /**
  * Haal populaire producten op uit meerdere categorieën.
- * Gebruikt AliExpress (heeft echte orders data + aparte quota).
- * Per query meerdere pagina's om meer variatie te krijgen.
+ * Primair: CJ Dropshipping (eigen API, onbeperkt).
+ * Fallback: AliExpress (RapidAPI).
  */
 async function getAmazonBestsellers(country = "NL") {
   const queryMap = {
-    "Elektronica": ["phone accessories", "wireless charger", "bluetooth speaker", "usb gadgets", "smartwatch band"],
-    "Verlichting": ["led strip lights", "smart bulb", "night light"],
-    "Huis & Keuken": ["kitchen gadget", "storage organizer", "bathroom organizer", "humidifier", "coffee accessories"],
-    "Tuin": ["garden decor", "solar light outdoor"],
-    "Sport & Fitness": ["fitness gear", "yoga accessories", "resistance bands", "sport bottle"],
-    "Mode": ["sunglasses", "watch strap", "backpack", "fashion jewelry"],
+    "Elektronica": ["phone charger", "bluetooth speaker", "wireless earbuds", "led strip"],
+    "Huis & Keuken": ["kitchen gadget", "storage box", "bathroom accessories"],
+    "Sport & Fitness": ["fitness equipment", "yoga mat", "sport bottle"],
+    "Mode": ["sunglasses", "watch", "backpack"],
     "Telefoon": ["phone case", "phone holder"],
-    "Auto": ["car accessories", "car phone mount", "car organizer"],
-    "Kinderen": ["baby toy", "kids learning toy"],
-    "Beauty": ["hair accessories", "makeup tool", "skin care tool"],
-    "Huisdieren": ["pet toy", "dog accessories", "cat toy"],
+    "Auto": ["car accessories", "car phone holder"],
+    "Kinderen": ["kids toy", "baby product"],
+    "Beauty": ["hair accessories", "makeup brush"],
+    "Huisdieren": ["pet toy", "dog bowl"],
+    "Verlichting": ["led light", "smart bulb"],
   };
 
   const queries = [];
@@ -113,25 +112,32 @@ async function getAmazonBestsellers(country = "NL") {
     }
   }
 
-  const { searchProducts: searchAli } = require("./aliexpress");
+  // Primair: CJ Dropshipping (eigen API, geen quota)
+  const { searchCJ } = require("./cjdropshipping");
 
-  // Per query fetchen we pagina 1 EN 2 voor meer variatie (2x meer producten)
   const results = [];
   for (let i = 0; i < queries.length; i += 3) {
     const batch = queries.slice(i, i + 3);
     const batchResults = await Promise.all(
-      batch.flatMap((q) => [
-        searchAli(q, 1, "salesDesc")
+      batch.map((q) =>
+        searchCJ(q, 1)
           .then((products) =>
-            products.map((p) => ({ ...p, category: categoryForQuery[q] || "" }))
+            products.map((p) => ({
+              ...p,
+              // CJ heeft geen sellPrice veld, maar wel price → gebruik dat als verkoopprijs
+              sellPrice: parseFloat(p.price) || 0,
+              price: 0, // inkoopprijs komt later via find-supplier
+              category: categoryForQuery[q] || "",
+              orders: 0,
+              rating: 0,
+              reviews: 0,
+            }))
           )
-          .catch(() => []),
-        searchAli(q, 2, "salesDesc")
-          .then((products) =>
-            products.map((p) => ({ ...p, category: categoryForQuery[q] || "" }))
-          )
-          .catch(() => []),
-      ])
+          .catch((e) => {
+            console.error(`CJ search "${q}" error:`, e.message);
+            return [];
+          })
+      )
     );
     results.push(...batchResults);
   }
@@ -141,14 +147,14 @@ async function getAmazonBestsellers(country = "NL") {
   const all = [];
   for (const products of results) {
     for (const p of products) {
-      if (p.id && !seen.has(p.id)) {
+      if (p.id && !seen.has(p.id) && p.sellPrice > 0) {
         seen.add(p.id);
         all.push(p);
       }
     }
   }
 
-  console.log(`Trending: ${all.length} producten via AliExpress (${queries.length} queries x 2 pages)`);
+  console.log(`Trending: ${all.length} producten via CJ Dropshipping`);
   return all;
 }
 
