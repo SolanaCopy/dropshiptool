@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /blog/
+Disallow: /api/
+Disallow: /test.html
+Disallow: /static/js/*.map
+Disallow: /static/css/*.map
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+Sitemap: https://trendvinder.nl/sitemap.xml

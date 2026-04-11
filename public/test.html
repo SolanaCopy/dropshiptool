@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><title>API Test</title></head>
+<body>
+<h1>API Test</h1>
+<button onclick="testSearch()">Test Zoeken</button>
+<button onclick="testTrending()">Test Trending</button>
+<pre id="output">Klik op een knop...</pre>
+<script>
+async function testSearch() {
+  document.getElementById('output').textContent = 'Laden...';
+  try {
+    const res = await fetch('http://localhost:3005/api/products/search?q=earbuds');
+    const json = await res.json();
+    document.getElementById('output').textContent =
+      'Status: ' + (json.success ? 'OK' : 'FOUT') + '\n' +
+      'Aantal producten: ' + (json.count || 0) + '\n' +
+      'Eerste product: ' + (json.data?.[0]?.name || 'geen') + '\n\n' +
+      JSON.stringify(json.data?.[0], null, 2);
+  } catch(e) {
+    document.getElementById('output').textContent = 'ERROR: ' + e.message;
+  }
+}
+async function testTrending() {
+  document.getElementById('output').textContent = 'Laden...';
+  try {
+    const res = await fetch('http://localhost:3005/api/products/trending');
+    const json = await res.json();
+    document.getElementById('output').textContent =
+      'Status: ' + (json.success ? 'OK' : 'FOUT') + '\n' +
+      'Aantal producten: ' + (json.count || 0) + '\n' +
+      'Eerste product: ' + (json.data?.[0]?.name || 'geen') + '\n\n' +
+      JSON.stringify(json.data?.[0], null, 2);
+  } catch(e) {
+    document.getElementById('output').textContent = 'ERROR: ' + e.message;
+  }
+}
+</script>
+</body>
+</html>

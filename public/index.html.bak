@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primaire SEO -->
+    <title>Trendvinder — Vind Winnende Dropshipping Producten | #1 Gratis Tool Nederland</title>
+    <meta name="description" content="Vind de best verkopende dropshipping producten met echte Amazon NL data, Google Trends analyse, TikTok trends en leveranciers vergelijking. Bereken je winstmarge en vind goedkope leveranciers op AliExpress en CJDropshipping. Start gratis — geen creditcard nodig." />
+    <meta name="keywords" content="dropshipping producten vinden, winnende producten, dropshipping nederland, product research tool, aliexpress leveranciers, cjdropshipping, dropship tool, trending producten, winstgevende producten, shopify dropshipping, bol.com dropshipping, dropshipping beginnen, dropshipping 2026, beste dropshipping producten, gratis dropshipping tool, dropshipping winstmarge berekenen, tiktok trending producten, goedkope leveranciers china, dropshipping zonder voorraad, bol.com verkoper worden" />
+    <meta name="author" content="Trendvinder" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://trendvinder.nl" />
+    <meta name="rating" content="general" />
+    <meta name="revisit-after" content="3 days" />
+    <meta name="geo.region" content="NL" />
+    <meta name="geo.placename" content="Nederland" />
+    <meta name="language" content="Dutch" />
+    <meta http-equiv="content-language" content="nl" />
+
+    <!-- Taal -->
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:locale:alternate" content="nl_BE" />
+    <link rel="alternate" hreflang="nl" href="https://trendvinder.nl" />
+    <link rel="alternate" hreflang="x-default" href="https://trendvinder.nl" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Trendvinder — Vind Winnende Dropshipping Producten" />
+    <meta property="og:description" content="Analyseer 1000+ producten, vergelijk leveranciers en bereken je winstmarge. De #1 gratis dropshipping tool van Nederland." />
+    <meta property="og:url" content="https://trendvinder.nl" />
+    <meta property="og:site_name" content="Trendvinder" />
+    <meta property="og:image" content="https://trendvinder.nl/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Trendvinder — Product Research Tool voor Dropshippers" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Trendvinder — #1 Dropshipping Product Research Tool" />
+    <meta name="twitter:description" content="Vind winnende producten, vergelijk leveranciers en bereken je marge. Gratis starten." />
+    <meta name="twitter:image" content="https://trendvinder.nl/og-image.jpg" />
+
+    <!-- Schema.org — Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Trendvinder",
+      "url": "https://trendvinder.nl",
+      "logo": "https://trendvinder.nl/logo512.png",
+      "description": "De #1 gratis dropshipping product research tool van Nederland",
+      "sameAs": [],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "email": "info@trendvinder.nl",
+        "availableLanguage": ["Dutch", "English"]
+      },
+      "foundingDate": "2026",
+      "areaServed": {
+        "@type": "GeoShape",
+        "name": "Nederland en België"
+      }
+    }
+    </script>
+
+    <!-- Schema.org — SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Trendvinder",
+      "applicationCategory": "BusinessApplication",
+      "applicationSubCategory": "E-commerce Tool",
+      "operatingSystem": "Web",
+      "url": "https://trendvinder.nl",
+      "description": "Product research tool voor dropshippers. Vind winnende producten met echte Amazon data, Google Trends, TikTok trends en leveranciers vergelijking.",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Starter",
+          "price": "0",
+          "priceCurrency": "EUR",
+          "description": "5 zoekopdrachten per dag, Winning Score analyse, Google Trends data"
+        },
+        {
+          "@type": "Offer",
+          "name": "Pro",
+          "price": "29",
+          "priceCurrency": "EUR",
+          "billingDuration": "P1M",
+          "description": "Onbeperkt zoeken, email alerts, CSV export, leveranciers vergelijking"
+        },
+        {
+          "@type": "Offer",
+          "name": "Business",
+          "price": "79",
+          "priceCurrency": "EUR",
+          "billingDuration": "P1M",
+          "description": "Alles uit Pro plus API toegang, team accounts en prioriteit support"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "2400",
+        "bestRating": "5"
+      },
+      "featureList": [
+        "Winnende producten zoeken op Amazon NL",
+        "Google Trends analyse (90 dagen)",
+        "TikTok trending producten",
+        "Leveranciers vergelijken (AliExpress, CJDropshipping, 1688, Alibaba)",
+        "Winning Score algoritme (0-100)",
+        "Winstcalculator met platformkosten",
+        "Merkproducten automatisch filteren",
+        "Email alerts voor trending producten"
+      ]
+    }
+    </script>
+
+    <!-- Schema.org — HowTo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "Hoe vind je winnende dropshipping producten met Trendvinder",
+      "description": "Stap-voor-stap uitleg hoe je met Trendvinder de meest winstgevende dropshipping producten vindt en leveranciers vergelijkt.",
+      "totalTime": "PT5M",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "EUR",
+        "value": "0"
+      },
+      "tool": {
+        "@type": "HowToTool",
+        "name": "Trendvinder"
+      },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Zoek een product of niche",
+          "text": "Typ een productnaam of categorie in de zoekbalk. Trendvinder doorzoekt Amazon Nederland en toont alle beschikbare producten met echte verkoopdata en trends.",
+          "url": "https://trendvinder.nl/#producten"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Analyseer de Winning Score",
+          "text": "Elk product krijgt een score van 0-100 gebaseerd op verkoopaantallen, rating, winstmarge en Google Trends data. Hogere score betekent een beter product om te verkopen.",
+          "url": "https://trendvinder.nl/#producten"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Vind de goedkoopste leverancier",
+          "text": "Klik op 'Vind exacte leverancier' en onze image search vindt hetzelfde product op AliExpress en CJDropshipping voor de laagste inkoopprijs.",
+          "url": "https://trendvinder.nl/#producten"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Bereken je winst en start met verkopen",
+          "text": "Gebruik de winstcalculator om je marge te berekenen met je gekozen platform, verzendmethode en advertentiekanaal. Start direct met dropshippen.",
+          "url": "https://trendvinder.nl/#calculator"
+        }
+      ]
+    }
+    </script>
+
+    <!-- Schema.org — FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wat is dropshipping en hoe begin ik ermee?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Dropshipping is een e-commerce model waarbij je producten verkoopt zonder voorraad. Als een klant bestelt, koop je het bij een leverancier (AliExpress, CJDropshipping) die het direct naar je klant stuurt. Begin met een niche kiezen, een Shopify of Bol.com webshop opzetten, en gebruik Trendvinder om winnende producten te vinden."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoe vind ik de beste dropshipping producten in 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gebruik Trendvinder om producten te analyseren op basis van verkoopcijfers, Google Trends data en TikTok trends. Onze Winning Score (0-100) combineert alle data om de meest winstgevende producten te identificeren. Filter op categorie en bekijk alleen dropship-geschikte producten."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat is een goede winstmarge voor dropshipping?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Een goede winstmarge ligt tussen 20% en 50%. Reken alle kosten mee: inkoopprijs, verzending (€2.50-€12), platformkosten (Shopify 2.9%, Bol.com 10%, Amazon 15%), advertentiekosten (€2-5 per verkoop) en BTW (21%). Gebruik onze winstcalculator om je exacte marge te berekenen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Waar kan ik dropshipping producten goedkoop inkopen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De beste leveranciers zijn: CJDropshipping (per stuk bestellen, 20-40% goedkoper dan AliExpress), AliExpress (grootste aanbod), 1688.com (fabrieksprijzen, maar bulk), en Alibaba (groothandel). Trendvinder vindt automatisch het exacte product bij de goedkoopste leverancier via image search."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Trendvinder gratis te gebruiken?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, het Starter plan is volledig gratis met 5 zoekopdrachten per dag, Winning Score analyse en Google Trends data. Voor onbeperkt zoeken, email alerts en CSV export kun je upgraden naar Pro (€29/maand). Geen creditcard nodig om te starten."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welke producten zijn niet geschikt voor dropshipping?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Merkproducten (Nike, Apple, Samsung, Philips, etc.) zijn niet geschikt omdat je ze niet mag doorverkopen zonder toestemming. Trendvinder filtert automatisch 200+ merken zodat je alleen producten ziet die echt geschikt zijn voor dropshipping."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoe weet ik of een product trending is?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Trendvinder analyseert Google Trends data (90 dagen) en TikTok trending videos om te bepalen welke producten nu populair zijn. Producten die stijgen in zoekvolume en veel verkocht worden krijgen een hogere Winning Score."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kan ik dropshipping doen via Bol.com?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, Bol.com staat dropshipping toe mits je aan hun voorwaarden voldoet (levertijd max 8 dagen, klantenservice in het Nederlands). De platformkosten zijn ongeveer 10%. Gebruik onze winstcalculator en selecteer Bol.com om je exacte marge te berekenen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoe lang duurt de verzending bij dropshipping?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De verzendtijd hangt af van je leverancier: CJDropshipping (7-15 dagen), ePacket (10-20 dagen), AliExpress Standard (15-30 dagen), en DHL Express (3-7 dagen). Voor Bol.com heb je snelle verzending nodig (max 8 dagen). Wij raden CJDropshipping of ePacket aan."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat kost dropshipping om te starten?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Je kunt starten met minder dan €100. De kosten: Shopify webshop (€36/maand), eerste producten testen (€20-50 advertentiebudget), en Trendvinder voor product research (gratis). Je hoeft geen voorraad in te kopen — je bestelt pas als een klant koopt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat is een Winning Score bij Trendvinder?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De Winning Score is een getal van 0-100 dat berekent hoe geschikt een product is voor dropshipping. Het combineert echte verkoopcijfers van Amazon NL, Google Trends data (90 dagen), winstmarge, rating en concurrentie. Een score boven 70 is een potentieel winnend product."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Schema.org — WebSite + SearchAction -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Trendvinder",
+      "url": "https://trendvinder.nl",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://trendvinder.nl/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Schema.org — BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://trendvinder.nl" },
+        { "@type": "ListItem", "position": 2, "name": "Producten Zoeken", "item": "https://trendvinder.nl/#producten" },
+        { "@type": "ListItem", "position": 3, "name": "Winstcalculator", "item": "https://trendvinder.nl/#calculator" },
+        { "@type": "ListItem", "position": 4, "name": "Prijzen", "item": "https://trendvinder.nl/#prijzen" }
+      ]
+    }
+    </script>
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://m.media-amazon.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://ae-pic-a1.aliexpress-media.com" />
+    <link rel="preconnect" href="https://cf.cjdropshipping.com" />
+    <link rel="dns-prefetch" href="https://developers.cjdropshipping.com" />
+    <link rel="dns-prefetch" href="https://m.media-amazon.com" />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Google Site Verification (vervang met je eigen code na registratie) -->
+    <!-- <meta name="google-site-verification" content="JOUW_VERIFICATIE_CODE" /> -->
+  </head>
+  <body>
+    <noscript>
+      <h1>Trendvinder — Vind Winnende Dropshipping Producten in Nederland</h1>
+      <p>Trendvinder is de #1 gratis product research tool voor dropshippers in Nederland en België.
+      Analyseer duizenden producten van Amazon NL, bekijk Google Trends data (90 dagen), vergelijk leveranciers
+      op AliExpress en CJDropshipping, en bereken je winstmarge. Start gratis zonder creditcard.</p>
+
+      <h2>Functies van Trendvinder</h2>
+      <ul>
+        <li>Winnende producten zoeken op Amazon Nederland met echte verkoopcijfers</li>
+        <li>Google Trends analyse — 90 dagen zoekvolume voor elke niche</li>
+        <li>TikTok trending producten ontdekken voordat ze viraal gaan</li>
+        <li>Leveranciers vergelijken: AliExpress, CJDropshipping, 1688, Temu, Alibaba</li>
+        <li>Winning Score algoritme (0-100) gebaseerd op data, niet op gevoel</li>
+        <li>Winstcalculator met Shopify, Bol.com, Amazon en Etsy kosten</li>
+        <li>200+ merkproducten automatisch gefilterd — geen juridische risico's</li>
+        <li>Email alerts wanneer nieuwe trending producten verschijnen</li>
+        <li>Niche Score — ontdek de meest winstgevende niches van 2026</li>
+        <li>CSV export van je product research resultaten</li>
+      </ul>
+
+      <h2>Hoe werkt Trendvinder?</h2>
+      <ol>
+        <li>Zoek een product of niche in de zoekbalk</li>
+        <li>Analyseer de Winning Score (0-100) van elk product</li>
+        <li>Vind de goedkoopste leverancier via image search technologie</li>
+        <li>Bereken je exacte winstmarge met onze calculator</li>
+      </ol>
+
+      <h2>Prijzen</h2>
+      <ul>
+        <li>Starter: Gratis — 5 zoekopdrachten per dag</li>
+        <li>Pro: €29/maand — Onbeperkt zoeken, email alerts, CSV export</li>
+        <li>Business: €79/maand — Alles uit Pro plus API toegang en team accounts</li>
+      </ul>
+
+      <h2>Populaire dropshipping categorieën</h2>
+      <p>Telefoon accessoires, huisdier producten, auto gadgets, keuken gadgets, home fitness,
+      mode accessoires, beauty producten, tuin en outdoor, speelgoed, en elektronica.</p>
+
+      <h2>Blog</h2>
+      <ul>
+        <li><a href="/blog/dropshipping-beginnen-2026">Dropshipping beginnen in 2026: Complete gids</a></li>
+        <li><a href="/blog/beste-dropshipping-producten-2026">25 Beste dropshipping producten 2026</a></li>
+        <li><a href="/blog/aliexpress-vs-cjdropshipping">AliExpress vs CJDropshipping vergelijking</a></li>
+        <li><a href="/blog/dropshipping-bol-com">Dropshipping via Bol.com: Regels en tips</a></li>
+        <li><a href="/blog/tiktok-ads-dropshipping">TikTok Ads voor dropshipping strategie</a></li>
+      </ul>
+
+      <p>Je hebt JavaScript nodig om Trendvinder te gebruiken. <a href="https://trendvinder.nl">Ga naar Trendvinder</a></p>
+    </noscript>
+    <div id="root"></div>
+  </body>
+</html>
