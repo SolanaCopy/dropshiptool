@@ -185,6 +185,45 @@ router.post("/trending/clear-cache", (req, res) => {
   res.json({ success: true, message: "Cache cleared" });
 });
 
+// GET /api/products/debug — diagnostics
+router.get("/debug", async (req, res) => {
+  const { searchProducts: searchAli } = require("../services/aliexpress");
+  const result = { tests: {} };
+  try {
+    const ali = await searchAli("phone case", 1, "salesDesc");
+    result.tests.aliexpress = { ok: true, count: ali.length, sample: ali.slice(0, 2) };
+  } catch (e) {
+    result.tests.aliexpress = { ok: false, error: e.message };
+  }
+  try {
+    const axios = require("axios");
+    const { data } = await axios.get("https://aliexpress-datahub.p.rapidapi.com/item_search", {
+      params: { q: "phone case", page: 1, sort: "salesDesc" },
+      headers: {
+        "x-rapidapi-key": process.env.RAPIDAPI_KEY,
+        "x-rapidapi-host": "aliexpress-datahub.p.rapidapi.com",
+      },
+      timeout: 15000,
+    });
+    result.tests.aliRaw = {
+      ok: true,
+      hasResult: !!data.result,
+      hasList: !!data.result?.resultList,
+      listLength: data.result?.resultList?.length || 0,
+      message: data.message || null,
+      rawKeys: Object.keys(data),
+    };
+  } catch (e) {
+    result.tests.aliRaw = { ok: false, error: e.message, response: e.response?.data };
+  }
+  result.env = {
+    hasRapidKey: !!process.env.RAPIDAPI_KEY,
+    rapidHost: process.env.RAPIDAPI_HOST || "(default)",
+    hasCjKey: !!process.env.CJ_API_KEY,
+  };
+  res.json(result);
+});
+
 // GET /api/products/analyze?keyword=...
 router.get("/analyze", async (req, res) => {
   const { keyword } = req.query;
