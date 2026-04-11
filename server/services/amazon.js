@@ -121,15 +121,24 @@ async function getAmazonBestsellers(country = "NL") {
       searchCJ(q, 1, 50).catch((e) => { console.error(`CJ "${q}" p1:`, e.message); return []; }),
       searchCJ(q, 2, 50).catch((e) => { console.error(`CJ "${q}" p2:`, e.message); return []; }),
     ]);
-    return pages.flat().map((p) => ({
-      ...p,
-      sellPrice: parseFloat(p.price) || 0,
-      price: 0,
-      category: categoryForQuery[q] || "",
-      orders: 0,
-      rating: 0,
-      reviews: 0,
-    }));
+    return pages.flat().map((p) => {
+      const costPrice = parseFloat(p.price) || 0;
+      // Dropship markup: 2.5x is gemiddelde gezonde marge (60% winst)
+      // Bij lage inkoopprijs (<€5) hogere markup (3x), bij hoge (>€30) lagere (2x)
+      let markup = 2.5;
+      if (costPrice < 5) markup = 3;
+      else if (costPrice > 30) markup = 2;
+      const suggestedSell = Math.round(costPrice * markup * 100) / 100;
+      return {
+        ...p,
+        sellPrice: suggestedSell, // geadviseerde verkoopprijs
+        price: costPrice, // echte inkoopprijs (CJ wholesale)
+        category: categoryForQuery[q] || "",
+        orders: 0,
+        rating: 0,
+        reviews: 0,
+      };
+    });
   };
 
   // Parallel met batches van 4 om CJ niet te flooden
@@ -140,19 +149,30 @@ async function getAmazonBestsellers(country = "NL") {
     results.push(...batchResults);
   }
 
-  // Combineer en verwijder duplicaten
+  // Combineer, dedup en filter junk
   const seen = new Set();
   const all = [];
   for (const products of results) {
     for (const p of products) {
-      if (p.id && !seen.has(p.id) && p.sellPrice > 0) {
-        seen.add(p.id);
-        all.push(p);
-      }
+      if (!p.id || seen.has(p.id)) continue;
+      if (!p.sellPrice || p.sellPrice <= 0) continue;
+      // Filter junk: geen extreem dure of te goedkope items
+      if (p.price < 1 || p.price > 80) continue;
+      // Naam moet redelijk zijn
+      if (!p.name || p.name.length < 10 || p.name.length > 150) continue;
+      // Geen industriële/technische termen
+      const nameL = p.name.toLowerCase();
+      const junkWords = ["adapter for", "transformer", "voltage regulator", "industrial", "wholesale lot", "bulk"];
+      if (junkWords.some((w) => nameL.includes(w))) continue;
+      // Moet afbeelding hebben
+      if (!p.image || p.image.length < 10) continue;
+
+      seen.add(p.id);
+      all.push(p);
     }
   }
 
-  console.log(`Trending: ${all.length} producten via CJ Dropshipping`);
+  console.log(`Trending: ${all.length} producten via CJ Dropshipping (na filter)`);
   return all;
 }
 
