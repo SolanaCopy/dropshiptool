@@ -86,20 +86,22 @@ async function searchAmazon(query, page = 1, country = "NL") {
 
 /**
  * Haal populaire producten op uit meerdere categorieën.
- * Probeert eerst Amazon, valt terug op AliExpress (die heeft aparte quota + echte orders data).
+ * Gebruikt AliExpress (heeft echte orders data + aparte quota).
+ * Per query meerdere pagina's om meer variatie te krijgen.
  */
 async function getAmazonBestsellers(country = "NL") {
   const queryMap = {
-    "Elektronica": ["phone accessories", "wireless charger", "bluetooth speaker", "usb hub", "webcam"],
-    "Verlichting": ["led strip lights", "smart home gadget", "night light kids"],
-    "Huis & Keuken": ["kitchen gadget", "storage organizer", "bathroom accessories", "humidifier"],
-    "Tuin": ["garden light", "garden tools"],
-    "Sport & Fitness": ["fitness gear", "yoga mat", "resistance bands", "sport bottle"],
-    "Mode": ["sunglasses", "watch band", "backpack"],
-    "Telefoon": ["phone case", "phone stand"],
-    "Auto": ["car accessories", "car phone holder"],
-    "Kinderen": ["educational toy", "kids night light"],
-    "Huisdieren": ["pet toy", "dog accessories"],
+    "Elektronica": ["phone accessories", "wireless charger", "bluetooth speaker", "usb gadgets", "smartwatch band"],
+    "Verlichting": ["led strip lights", "smart bulb", "night light"],
+    "Huis & Keuken": ["kitchen gadget", "storage organizer", "bathroom organizer", "humidifier", "coffee accessories"],
+    "Tuin": ["garden decor", "solar light outdoor"],
+    "Sport & Fitness": ["fitness gear", "yoga accessories", "resistance bands", "sport bottle"],
+    "Mode": ["sunglasses", "watch strap", "backpack", "fashion jewelry"],
+    "Telefoon": ["phone case", "phone holder"],
+    "Auto": ["car accessories", "car phone mount", "car organizer"],
+    "Kinderen": ["baby toy", "kids learning toy"],
+    "Beauty": ["hair accessories", "makeup tool", "skin care tool"],
+    "Huisdieren": ["pet toy", "dog accessories", "cat toy"],
   };
 
   const queries = [];
@@ -111,20 +113,25 @@ async function getAmazonBestsellers(country = "NL") {
     }
   }
 
-  // Primair: AliExpress (gratis quota nog beschikbaar + echte orders data)
   const { searchProducts: searchAli } = require("./aliexpress");
 
+  // Per query fetchen we pagina 1 EN 2 voor meer variatie (2x meer producten)
   const results = [];
   for (let i = 0; i < queries.length; i += 3) {
     const batch = queries.slice(i, i + 3);
     const batchResults = await Promise.all(
-      batch.map((q) =>
+      batch.flatMap((q) => [
         searchAli(q, 1, "salesDesc")
           .then((products) =>
             products.map((p) => ({ ...p, category: categoryForQuery[q] || "" }))
           )
-          .catch(() => [])
-      )
+          .catch(() => []),
+        searchAli(q, 2, "salesDesc")
+          .then((products) =>
+            products.map((p) => ({ ...p, category: categoryForQuery[q] || "" }))
+          )
+          .catch(() => []),
+      ])
     );
     results.push(...batchResults);
   }
@@ -141,9 +148,7 @@ async function getAmazonBestsellers(country = "NL") {
     }
   }
 
-  // Als AliExpress ook niks geeft, valt het systeem terug op lege array
-  // (frontend laat geen producten zien ipv lege cards met 0 data)
-  console.log(`Trending: ${all.length} producten via AliExpress`);
+  console.log(`Trending: ${all.length} producten via AliExpress (${queries.length} queries x 2 pages)`);
   return all;
 }
 

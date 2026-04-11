@@ -24,7 +24,7 @@ function optionalAuth(req) {
 
 // In-memory cache met limiet
 const cache = new Map();
-const CACHE_TTL = 60 * 60 * 1000;
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 uur - langer om API quota te sparen
 const CACHE_MAX = 500;
 
 function getCached(key) {
