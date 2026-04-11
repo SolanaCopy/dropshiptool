@@ -22,15 +22,42 @@ function optionalAuth(req) {
   }
 }
 
-// In-memory cache met limiet
+// Persistent disk cache (overleeft Railway restarts via volume)
+const fs = require("fs");
+const path = require("path");
+const CACHE_DIR = process.env.DB_PATH
+  ? path.join(path.dirname(process.env.DB_PATH), "cache")
+  : path.join(__dirname, "..", "cache");
+
+try { if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true }); } catch {}
+
 const cache = new Map();
-const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 uur - langer om API quota te sparen
+const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 uur
 const CACHE_MAX = 500;
 
+function safeKey(key) {
+  return String(key).replace(/[^a-z0-9_-]/gi, "_").substring(0, 200);
+}
+
 function getCached(key) {
+  // 1. check memory
   const entry = cache.get(key);
   if (entry && Date.now() - entry.time < CACHE_TTL) return entry.data;
   if (entry) cache.delete(key);
+
+  // 2. check disk
+  try {
+    const file = path.join(CACHE_DIR, safeKey(key) + ".json");
+    if (fs.existsSync(file)) {
+      const raw = JSON.parse(fs.readFileSync(file, "utf8"));
+      if (Date.now() - raw.time < CACHE_TTL) {
+        cache.set(key, raw); // warm memory
+        return raw.data;
+      }
+      fs.unlinkSync(file);
+    }
+  } catch {}
+
   return null;
 }
 
@@ -39,7 +66,13 @@ function setCache(key, data) {
     const oldest = cache.keys().next().value;
     cache.delete(oldest);
   }
-  cache.set(key, { data, time: Date.now() });
+  const entry = { data, time: Date.now() };
+  cache.set(key, entry);
+  // Persist naar disk voor survival na restart
+  try {
+    const file = path.join(CACHE_DIR, safeKey(key) + ".json");
+    fs.writeFileSync(file, JSON.stringify(entry));
+  } catch {}
 }
 
 // GET /api/products/search?q=...
@@ -182,6 +215,10 @@ router.get("/trending", async (req, res) => {
 // POST /api/products/trending/clear-cache — force refresh
 router.post("/trending/clear-cache", (req, res) => {
   cache.delete("trending");
+  try {
+    const file = path.join(CACHE_DIR, safeKey("trending") + ".json");
+    if (fs.existsSync(file)) fs.unlinkSync(file);
+  } catch {}
   res.json({ success: true, message: "Cache cleared" });
 });
 
