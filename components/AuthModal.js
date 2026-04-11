@@ -4,8 +4,8 @@ import { useState } from "react";
 import ReactDOM from "react-dom";
 import { useAuth } from "../context/AuthContext";
 
-function AuthModal({ onClose }) {
-  const [mode, setMode] = useState("login");
+function AuthModal({ onClose, initialMode = "login" }) {
+  const [mode, setMode] = useState(initialMode);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

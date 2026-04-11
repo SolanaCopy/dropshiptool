@@ -126,10 +126,15 @@ function Header({ onShowAuth, activeTab, onTabChange, favoriteCount, previewProd
                 <button className="btn-cta btn-logout" onClick={logout}>Uitloggen</button>
               </>
             ) : (
-              <button className="btn-cta" onClick={onShowAuth}>
-                <span className="btn-cta-icon">&#9889;</span>
-                Gratis starten
-              </button>
+              <div className="nav-auth-buttons">
+                <button className="btn-auth-login" onClick={() => onShowAuth("login")}>
+                  Inloggen
+                </button>
+                <button className="btn-auth-register" onClick={() => onShowAuth("register")}>
+                  <span className="btn-cta-icon">&#9889;</span>
+                  Account aanmaken
+                </button>
+              </div>
             )}
           </nav>
         </div>
@@ -156,10 +161,9 @@ function Header({ onShowAuth, activeTab, onTabChange, favoriteCount, previewProd
             <div className="hero-cta-row">
               {!user && (
                 <>
-                  <button className="hero-btn-primary" onClick={onShowAuth}>Start gratis &rarr;</button>
-                  <button className="hero-btn-secondary">
-                    <span className="play-icon">&#9654;</span>
-                    Bekijk demo
+                  <button className="hero-btn-primary" onClick={() => onShowAuth("register")}>Account aanmaken &rarr;</button>
+                  <button className="hero-btn-secondary" onClick={() => onShowAuth("login")}>
+                    Inloggen
                   </button>
                 </>
               )}

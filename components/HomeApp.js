@@ -40,7 +40,7 @@ export default function HomeApp() {
   const handleUpgrade = () => {
     if (!user) {
       sessionStorage.setItem("afterLoginAction", "upgrade");
-      setShowAuth(true);
+      setShowAuth("login");
       return;
     }
     setShowCheckout({ plan: "pro" });
@@ -63,7 +63,7 @@ export default function HomeApp() {
   };
   const [supplierPrices, setSupplierPrices] = useState({});
   const [category, setCategory] = useState("Alle");
-  const [showAuth, setShowAuth] = useState(false);
+  const [showAuth, setShowAuth] = useState(null); // null | "login" | "register"
   const [favorites, setFavorites] = useState([]);
   const [showProWelcome, setShowProWelcome] = useState(false);
 
@@ -99,7 +99,7 @@ export default function HomeApp() {
 
   const handleToggleFavorite = async (product) => {
     const token = localStorage.getItem("token");
-    if (!token) { setShowAuth(true); return; }
+    if (!token) { setShowAuth("login"); return; }
 
     const isFav = favorites.some((f) => f.productId === product.id);
     if (isFav) {
@@ -203,7 +203,7 @@ export default function HomeApp() {
   return (
     <>
       <Header
-        onShowAuth={() => setShowAuth(true)}
+        onShowAuth={(mode) => setShowAuth(mode || "login")}
         activeTab={tab}
         onTabChange={setTab}
         favoriteCount={favorites.length}
@@ -436,7 +436,7 @@ export default function HomeApp() {
         </div>
       )}
 
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+      {showAuth && <AuthModal initialMode={showAuth} onClose={() => setShowAuth(null)} />}
 
       {showCheckout && (
         <Checkout

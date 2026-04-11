@@ -9,28 +9,46 @@ const API = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3005") + "/api
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-
-  // Load token from localStorage on mount (client-side only)
-  useEffect(() => {
-    const saved = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-    if (saved) setToken(saved);
-    else setLoading(false);
-  }, []);
   const [loading, setLoading] = useState(true);
 
+  // Stap 1: laad token uit localStorage op mount
   useEffect(() => {
-    if (token) {
-      fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
-        .then((r) => r.json())
-        .then((j) => {
-          if (j.success) setUser(j.data);
-          else { setToken(null); localStorage.removeItem("token"); }
-          setLoading(false);
-        })
-        .catch(() => { setLoading(false); });
+    if (typeof window === "undefined") return;
+    const saved = localStorage.getItem("token");
+    if (saved) {
+      setToken(saved);
     } else {
       setLoading(false);
     }
+  }, []);
+
+  // Stap 2: als token verandert, haal user data op
+  useEffect(() => {
+    if (!token) return;
+
+    let cancelled = false;
+
+    fetch(`${API}/auth/me`, { headers: { Authorization: `Bearer ${token}` } })
+      .then((r) => r.json())
+      .then((j) => {
+        if (cancelled) return;
+        if (j.success) {
+          setUser(j.data);
+        } else {
+          // Token ongeldig — opruimen
+          localStorage.removeItem("token");
+          setToken(null);
+          setUser(null);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        // Netwerk error — token NIET wissen (backend kan even plat zijn)
+        setLoading(false);
+      });
+
+    return () => { cancelled = true; };
   }, [token]);
 
   const login = async (email, password) => {
@@ -67,7 +85,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
-  // Refresh user data (e.g. after plan upgrade)
+  // Refresh user data (na plan upgrade)
   const refreshUser = async () => {
     if (!token) return;
     try {
