@@ -2,6 +2,12 @@
 
 import { useMemo } from "react";
 
+function estimateOrders(product) {
+  if (product.orders && product.orders > 0) return { value: product.orders, isEstimate: false };
+  if (product.reviews && product.reviews > 0) return { value: Math.round(product.reviews * 15), isEstimate: true };
+  return { value: 0, isEstimate: false };
+}
+
 function ProductOfTheDay({ products, onFindSupplier }) {
   // Selecteer product van de dag op basis van datum (zelfde product hele dag)
   const product = useMemo(() => {
@@ -14,6 +20,7 @@ function ProductOfTheDay({ products, onFindSupplier }) {
   if (!product) return null;
 
   const sell = product.sellPrice || 0;
+  const ordersInfo = estimateOrders(product);
 
   return (
     <div className="potd">
@@ -33,10 +40,12 @@ function ProductOfTheDay({ products, onFindSupplier }) {
               <span className="potd-stat-value">{product.winningScore || 0}</span>
               <span className="potd-stat-label">Winning Score</span>
             </div>
-            <div className="potd-stat">
-              <span className="potd-stat-value">{(product.orders || 0).toLocaleString("nl-NL")}+</span>
-              <span className="potd-stat-label">Verkocht</span>
-            </div>
+            {ordersInfo.value > 0 && (
+              <div className="potd-stat">
+                <span className="potd-stat-value">{ordersInfo.isEstimate && "~"}{ordersInfo.value.toLocaleString("nl-NL")}+</span>
+                <span className="potd-stat-label">{ordersInfo.isEstimate ? "Verkocht (~)" : "Verkocht"}</span>
+              </div>
+            )}
             <div className="potd-stat">
               <span className="potd-stat-value">{product.rating ? product.rating.toFixed(1) : "-"}</span>
               <span className="potd-stat-label">Rating</span>

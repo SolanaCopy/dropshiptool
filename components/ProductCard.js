@@ -27,8 +27,21 @@ function getSupplierLinks(productName) {
   ];
 }
 
+// Schat verkoopaantal op basis van reviews als echte data ontbreekt
+// Vuistregel: ongeveer 5-7% van kopers laat een review achter → vermenigvuldig reviews met 15
+function estimateOrders(product) {
+  if (product.orders && product.orders > 0) {
+    return { value: product.orders, isEstimate: false };
+  }
+  if (product.reviews && product.reviews > 0) {
+    return { value: Math.round(product.reviews * 15), isEstimate: true };
+  }
+  return { value: 0, isEstimate: false };
+}
+
 function ProductCard({ product, onFindSupplier, onToggleFavorite, isFavorite }) {
   const sell = product.sellPrice || 0;
+  const ordersInfo = estimateOrders(product);
   // Alleen echte inkoopprijs tonen als die lager is dan verkoopprijs
   const hasRealCost = product.price > 0 && product.price < sell;
   const cost = hasRealCost ? product.price : 0;
@@ -116,13 +129,19 @@ function ProductCard({ product, onFindSupplier, onToggleFavorite, isFavorite }) 
         </div>
 
         <div className="product-metrics">
-          <div className="metric">
-            <div className="metric-icon">&#128200;</div>
-            <div>
-              <span className="metric-value">{(product.orders || 0).toLocaleString("nl-NL")}+</span>
-              <span className="metric-label">Verkocht</span>
+          {ordersInfo.value > 0 && (
+            <div className="metric">
+              <div className="metric-icon">&#128200;</div>
+              <div>
+                <span className="metric-value">
+                  {ordersInfo.isEstimate && "~"}{ordersInfo.value.toLocaleString("nl-NL")}+
+                </span>
+                <span className="metric-label">
+                  {ordersInfo.isEstimate ? "Verkocht (geschat)" : "Verkocht"}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
           <div className="metric">
             <div className="metric-icon">&#11088;</div>
             <div>

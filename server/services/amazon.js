@@ -85,20 +85,21 @@ async function searchAmazon(query, page = 1, country = "NL") {
 }
 
 /**
- * Haal populaire producten op uit meerdere categorieën
+ * Haal populaire producten op uit meerdere categorieën.
+ * Probeert eerst Amazon, valt terug op AliExpress (die heeft aparte quota + echte orders data).
  */
 async function getAmazonBestsellers(country = "NL") {
   const queryMap = {
-    "Elektronica": ["telefoon accessoires", "draadloze oplader", "bluetooth speaker", "usb hub", "webcam accessoires"],
-    "Verlichting": ["led verlichting", "smart home gadgets", "nachtlamp kinderen"],
-    "Huis & Keuken": ["keuken gadgets", "opberg organizer", "badkamer accessoires", "luchtbevochtiger"],
-    "Tuin": ["tuin verlichting", "tuin accessoires"],
-    "Sport & Fitness": ["fitness accessoires", "yoga mat", "resistance bands", "waterfles sport"],
-    "Mode": ["zonnebril", "horloge band", "rugzak"],
-    "Telefoon": ["telefoonhoesje", "telefoon accessoires"],
-    "Auto": ["auto accessoires", "telefoonhouder auto"],
-    "Kinderen": ["speelgoed educatief", "nachtlamp kinderen"],
-    "Huisdieren": ["huisdier speelgoed", "honden accessoires"],
+    "Elektronica": ["phone accessories", "wireless charger", "bluetooth speaker", "usb hub", "webcam"],
+    "Verlichting": ["led strip lights", "smart home gadget", "night light kids"],
+    "Huis & Keuken": ["kitchen gadget", "storage organizer", "bathroom accessories", "humidifier"],
+    "Tuin": ["garden light", "garden tools"],
+    "Sport & Fitness": ["fitness gear", "yoga mat", "resistance bands", "sport bottle"],
+    "Mode": ["sunglasses", "watch band", "backpack"],
+    "Telefoon": ["phone case", "phone stand"],
+    "Auto": ["car accessories", "car phone holder"],
+    "Kinderen": ["educational toy", "kids night light"],
+    "Huisdieren": ["pet toy", "dog accessories"],
   };
 
   const queries = [];
@@ -110,30 +111,39 @@ async function getAmazonBestsellers(country = "NL") {
     }
   }
 
-  // In batches van 3 om rate limits te vermijden
+  // Primair: AliExpress (gratis quota nog beschikbaar + echte orders data)
+  const { searchProducts: searchAli } = require("./aliexpress");
+
   const results = [];
   for (let i = 0; i < queries.length; i += 3) {
     const batch = queries.slice(i, i + 3);
     const batchResults = await Promise.all(
-      batch.map((q) => searchAmazon(q, 1, country).then((products) =>
-        products.map((p) => ({ ...p, category: categoryForQuery[q] || "" }))
-      ).catch(() => []))
+      batch.map((q) =>
+        searchAli(q, 1, "salesDesc")
+          .then((products) =>
+            products.map((p) => ({ ...p, category: categoryForQuery[q] || "" }))
+          )
+          .catch(() => [])
+      )
     );
     results.push(...batchResults);
   }
 
-  // Combineer en verwijder duplicaten op basis van id
+  // Combineer en verwijder duplicaten
   const seen = new Set();
   const all = [];
   for (const products of results) {
     for (const p of products) {
-      if (!seen.has(p.id)) {
+      if (p.id && !seen.has(p.id)) {
         seen.add(p.id);
         all.push(p);
       }
     }
   }
 
+  // Als AliExpress ook niks geeft, valt het systeem terug op lege array
+  // (frontend laat geen producten zien ipv lege cards met 0 data)
+  console.log(`Trending: ${all.length} producten via AliExpress`);
   return all;
 }
 

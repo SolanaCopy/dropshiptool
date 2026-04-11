@@ -2,6 +2,12 @@
 
 import { useRef, useState, useEffect } from "react";
 
+function estimateOrders(product) {
+  if (product.orders && product.orders > 0) return { value: product.orders, isEstimate: false };
+  if (product.reviews && product.reviews > 0) return { value: Math.round(product.reviews * 15), isEstimate: true };
+  return { value: 0, isEstimate: false };
+}
+
 function TopSlider({ products }) {
   const trackRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -125,11 +131,15 @@ function TopSlider({ products }) {
 
                 {/* Stats row */}
                 <div className="slide-stats">
-                  <div className="slide-stat">
-                    <span className="slide-stat-label">Verkocht</span>
-                    <span className="slide-stat-value">{(product.orders || 0).toLocaleString("nl-NL")}+</span>
-                  </div>
-                  <div className="slide-stat-divider"></div>
+                  {(() => { const o = estimateOrders(product); return o.value > 0 && (
+                    <>
+                      <div className="slide-stat">
+                        <span className="slide-stat-label">{o.isEstimate ? "~Verkocht" : "Verkocht"}</span>
+                        <span className="slide-stat-value">{o.value.toLocaleString("nl-NL")}+</span>
+                      </div>
+                      <div className="slide-stat-divider"></div>
+                    </>
+                  ); })()}
                   <div className="slide-stat">
                     <span className="slide-stat-label">Rating</span>
                     <span className="slide-stat-value">{product.rating ? product.rating.toFixed(1) : "-"}</span>
