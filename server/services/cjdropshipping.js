@@ -25,14 +25,14 @@ async function getToken() {
   throw new Error("CJ token ophalen mislukt: " + data.message);
 }
 
-async function searchCJ(keyword, page = 1) {
+async function searchCJ(keyword, page = 1, pageSize = 50) {
   const token = await getToken();
 
   const { data } = await axios.get(`${CJ_BASE}/product/list`, {
     params: {
       productNameEn: keyword,
       pageNum: page,
-      pageSize: 20,
+      pageSize,
     },
     headers: {
       "CJ-Access-Token": token,

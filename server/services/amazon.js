@@ -115,30 +115,28 @@ async function getAmazonBestsellers(country = "NL") {
   // Primair: CJ Dropshipping (eigen API, geen quota)
   const { searchCJ } = require("./cjdropshipping");
 
+  // Per query 2 pagina's × 50 producten = 100 max per query
+  const fetchQuery = async (q) => {
+    const pages = await Promise.all([
+      searchCJ(q, 1, 50).catch((e) => { console.error(`CJ "${q}" p1:`, e.message); return []; }),
+      searchCJ(q, 2, 50).catch((e) => { console.error(`CJ "${q}" p2:`, e.message); return []; }),
+    ]);
+    return pages.flat().map((p) => ({
+      ...p,
+      sellPrice: parseFloat(p.price) || 0,
+      price: 0,
+      category: categoryForQuery[q] || "",
+      orders: 0,
+      rating: 0,
+      reviews: 0,
+    }));
+  };
+
+  // Parallel met batches van 4 om CJ niet te flooden
   const results = [];
-  for (let i = 0; i < queries.length; i += 3) {
-    const batch = queries.slice(i, i + 3);
-    const batchResults = await Promise.all(
-      batch.map((q) =>
-        searchCJ(q, 1)
-          .then((products) =>
-            products.map((p) => ({
-              ...p,
-              // CJ heeft geen sellPrice veld, maar wel price → gebruik dat als verkoopprijs
-              sellPrice: parseFloat(p.price) || 0,
-              price: 0, // inkoopprijs komt later via find-supplier
-              category: categoryForQuery[q] || "",
-              orders: 0,
-              rating: 0,
-              reviews: 0,
-            }))
-          )
-          .catch((e) => {
-            console.error(`CJ search "${q}" error:`, e.message);
-            return [];
-          })
-      )
-    );
+  for (let i = 0; i < queries.length; i += 4) {
+    const batch = queries.slice(i, i + 4);
+    const batchResults = await Promise.all(batch.map(fetchQuery));
     results.push(...batchResults);
   }
 
