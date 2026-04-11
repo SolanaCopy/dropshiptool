@@ -168,12 +168,21 @@ router.get("/trending", async (req, res) => {
       data: scoredProducts,
     };
 
-    setCache("trending", result);
+    // NOOIT lege resultaten cachen — anders blijft een falende API-call 6 uur hangen
+    if (scoredProducts.length > 0) {
+      setCache("trending", result);
+    }
     res.json(result);
   } catch (error) {
     console.error("Trending error:", error.message);
     res.status(500).json({ success: false, error: error.message });
   }
+});
+
+// POST /api/products/trending/clear-cache — force refresh
+router.post("/trending/clear-cache", (req, res) => {
+  cache.delete("trending");
+  res.json({ success: true, message: "Cache cleared" });
 });
 
 // GET /api/products/analyze?keyword=...
