@@ -188,12 +188,18 @@ async function getCJPrice(productName) {
 
     if (results.length === 0) return null;
 
-    // Filter: resultaten die minstens 1 zoekwoord bevatten
-    const relevant = results.filter((r) => {
+    // Filter: resultaten moeten minstens 40% van zoekwoorden bevatten
+    const minMatchPercent = 0.4;
+    const scored = results.map((r) => {
       const name = r.name.toLowerCase();
-      const matches = words.filter((w) => name.includes(w)).length;
-      return matches >= Math.min(2, words.length);
+      const matchCount = words.filter((w) => name.includes(w)).length;
+      const matchPercent = words.length > 0 ? matchCount / words.length : 0;
+      return { ...r, matchCount, matchPercent };
     });
+
+    const relevant = scored
+      .filter((r) => r.matchPercent >= minMatchPercent && r.matchCount >= 2)
+      .sort((a, b) => b.matchPercent - a.matchPercent);
 
     // Deduplicate op id
     const seen = new Set();
