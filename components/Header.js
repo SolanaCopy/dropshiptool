@@ -149,19 +149,22 @@ function Header({ onShowAuth, activeTab, onTabChange, favoriteCount, previewProd
             </div>
 
             <h2>
-              Vind winnende producten
+              De shortcut naar
               <br />
-              <span className="hero-accent">voordat je concurrent dat doet</span>
+              <span className="hero-accent">winnende producten.</span>
             </h2>
 
             <p className="hero-sub">
-              Analyseer producten met echte Amazon data, vergelijk leveranciers op AliExpress, CJDropshipping en Temu, en bereken je winstmarge — alles op één plek.
+              Echte Amazon-data, Google Trends, TikTok-signalen en leveranciersprijzen van AliExpress, CJ en Temu — gebundeld in één score. Start gratis, geen creditcard.
             </p>
 
             <div className="hero-cta-row">
               {!user && (
                 <>
-                  <button className="hero-btn-primary" onClick={() => onShowAuth("register")}>Account aanmaken &rarr;</button>
+                  <button className="hero-btn-primary" onClick={() => onShowAuth("register")}>
+                    <span>Gratis starten</span>
+                    <span className="hero-btn-arrow">&rarr;</span>
+                  </button>
                   <button className="hero-btn-secondary" onClick={() => onShowAuth("login")}>
                     Inloggen
                   </button>
