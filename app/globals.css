@@ -5880,11 +5880,12 @@ body { background: var(--tv-obsidian-900); }
     linear-gradient(180deg, var(--tv-obsidian-900) 0%, var(--tv-obsidian-800) 40%, var(--tv-obsidian-900) 100%);
 }
 
-/* Header surface */
+/* Header surface — coral/cyan tint but keeps hero-bg.jpg visible */
 .header {
   background:
-    linear-gradient(135deg, rgba(11, 13, 31, 0.94) 0%, rgba(30, 11, 36, 0.85) 45%, rgba(55, 12, 48, 0.7) 75%, rgba(190, 24, 93, 0.5) 100%),
-    url('/hero-bg.jpg') center / cover no-repeat;
+    linear-gradient(135deg, rgba(11, 13, 31, 0.72) 0%, rgba(30, 11, 36, 0.55) 45%, rgba(55, 12, 48, 0.42) 75%, rgba(190, 24, 93, 0.3) 100%),
+    url('/hero-bg.jpg') center / cover no-repeat,
+    linear-gradient(135deg, #1a0f2a 0%, #0b0d1f 50%, #0f1a28 100%);
 }
 
 /* Floating orbs — coral / cyan */
