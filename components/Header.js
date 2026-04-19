@@ -101,8 +101,42 @@ function Header({ onShowAuth, activeTab, onTabChange, favoriteCount, previewProd
         {/* Top bar */}
         <div className="header-top">
           <div className="logo">
-            <div className="logo-mark">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <div className="logo-mark" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="tv-logo-line" x1="0" y1="40" x2="40" y2="0" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#a5b4fc" />
+                    <stop offset="55%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#fde68a" />
+                  </linearGradient>
+                  <radialGradient id="tv-logo-star" cx="0.5" cy="0.5" r="0.6">
+                    <stop offset="0%" stopColor="#fde68a" />
+                    <stop offset="60%" stopColor="#fbbf24" />
+                    <stop offset="100%" stopColor="#f59e0b" />
+                  </radialGradient>
+                </defs>
+                {/* Trend line: rising zigzag */}
+                <path
+                  d="M6 30 L14 24 L20 27 L28 15"
+                  stroke="url(#tv-logo-line)"
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+                {/* Data points along the line */}
+                <circle cx="6" cy="30" r="2" fill="#c7d2fe" />
+                <circle cx="14" cy="24" r="2" fill="#ffffff" />
+                <circle cx="20" cy="27" r="2" fill="#ffffff" />
+                {/* Star marking the winning peak */}
+                <path
+                  d="M28 7 L29.9 12.1 L35 13.1 L31.2 16.8 L32.3 22 L28 19.3 L23.7 22 L24.8 16.8 L21 13.1 L26.1 12.1 Z"
+                  fill="url(#tv-logo-star)"
+                  stroke="#f59e0b"
+                  strokeWidth="0.6"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
             <div>
               <h1>Trendvinder</h1>
