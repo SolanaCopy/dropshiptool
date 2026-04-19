@@ -1794,11 +1794,11 @@ body {
 }
 
 .slide-score-label {
-  font-size: 0.6rem;
-  font-weight: 600;
+  font-size: 0.62rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
-  color: #94a3b8;
+  letter-spacing: 0.5px;
+  color: #475569;
   white-space: nowrap;
 }
 
@@ -1843,9 +1843,9 @@ body {
   line-height: 1;
 }
 
-.slide-score-num.score-high { color: #16a34a; background: #f0fdf4; }
-.slide-score-num.score-mid { color: #a16207; background: #fefce8; }
-.slide-score-num.score-low { color: #6b7280; background: #f1f5f9; }
+.slide-score-num.score-high { color: #166534; background: #dcfce7; border: 1px solid #bbf7d0; }
+.slide-score-num.score-mid { color: #854d0e; background: #fef9c3; border: 1px solid #fde68a; }
+.slide-score-num.score-low { color: #334155; background: #e2e8f0; border: 1px solid #cbd5e1; }
 
 /* Price Row */
 .slide-price-row {
@@ -1888,12 +1888,12 @@ body {
 
 .slide-stat-label {
   display: block;
-  font-size: 0.6rem;
-  font-weight: 500;
-  color: #94a3b8;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: #475569;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 0.1rem;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.15rem;
 }
 
 .slide-stat-value {
@@ -1917,20 +1917,24 @@ body {
 .top-slide-link {
   display: block;
   text-align: center;
-  padding: 0.45rem;
-  background: #eef2ff;
-  border: 1px solid #e0e7ff;
+  padding: 0.55rem;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border: 1px solid #4f46e5;
   border-radius: 10px;
-  color: #4f46e5;
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.75rem;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.2px;
   transition: all 0.2s;
   margin-top: auto;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
 }
 
 .top-slide-link:hover {
-  background: #e0e7ff;
+  background: linear-gradient(135deg, #4338ca, #4f46e5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
 }
 
 /* === Product Grid === */
